@@ -48,7 +48,9 @@
 	}).addTo(map);
 
 	helloMarker = L.marker(jeloya);
-	helloMarker.addTo(map).bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+	var textPopup = L.popup()
+			.setContent('Hi Jeløya');
+	helloMarker.addTo(map).bindPopup(textPopup).openPopup();
 
 </script>
 
@@ -108,7 +110,7 @@
 	// utility function to display the text message in the input field
 	function displayText(text) {
 		console.log(text);
-		helloMarker.setContent(text);
+		textPopup.setContent(text);
 		window.castReceiverManager.setApplicationState(text);
 	}
 
