@@ -1,4 +1,9 @@
 .idea/
 .DS_Store
 Thumbs.db
-
+SuperGuideApp/.gradle
+SuperGuideApp/local.properties
+SuperGuideApp/.idea/workspace.xml
+SuperGuideApp/.idea/libraries
+SuperGuideApp/.DS_Store
+SuperGuideApp/build
