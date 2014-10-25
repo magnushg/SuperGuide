@@ -5,6 +5,7 @@ var scope,
     textPopup,
     paths = {},
     userMarkers = {},
+    lineColors = {},
     lineLayer,
     markerLayer,
     zoom = 16;
@@ -128,7 +129,10 @@ function addPosition(lineId, lat, lng) {
         paths[lineId].addLatLng([lat, lng]);
     } else {
         console.log("Creating new");
-        paths[lineId] = L.polyline([[lat, lng]], {color: getRandomColor()});
+        if (!lineColors[lineId]) {
+            lineColors[lineId] = getRandomColor();
+        }
+        paths[lineId] = L.polyline([[lat, lng]], {color: lineColors[lineId]});
         lineLayer.addLayer(paths[lineId]);
     }
 }
