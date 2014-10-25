@@ -6,13 +6,14 @@ var scope,
     paths = {},
     userMarkers = {},
     lineLayer,
-    markerLayer;
+    markerLayer,
+    zoom = 15;
 
 
 $(function () {
         map = L.map('map', {
             zoomControl: false
-        }).setView([59, 10], 13);
+        }).setView([59, 10], zoom);
 
         lineLayer = L.layerGroup([])
             .addTo(map);
