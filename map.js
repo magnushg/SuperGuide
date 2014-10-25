@@ -33,7 +33,8 @@ $(function () {
             function (data) {
                 console.log("Data: ", data);
                 var users = scope.users;
-                $.each(users, function (userKey, userElement) {
+                $.each(users, function (userIdx, userElement) {
+                    var userKey = userElement.$id;
                     var trackings = userElement.Trackings;
 
                     if (!trackings) {
@@ -44,10 +45,10 @@ $(function () {
                     $.each(trackings, function (trackingKey, trackingElement) {
                         addPosition(userKey, trackingElement.lat, trackingElement.lng);
                         updateMapPin(userKey, [trackingElement.lat, trackingElement.lng], "Last position");
-                        console.log("Map: ", map);
-                        map.setView([trackingElement.lat, trackingElement.lng], zoom);
                     });
                 });
+
+                updateMapToBounds();
 
                 scope.users.$watch(function (data) {
                     lineLayer.clearLayers();
@@ -67,9 +68,9 @@ $(function () {
                         $.each(trackings, function (trackingKey, trackingElement) {
                             addPosition(userKey, trackingElement.lat, trackingElement.lng);
                             updateMapPin(userKey, [trackingElement.lat, trackingElement.lng], "Last position");
-                            map.setView([trackingElement.lat, trackingElement.lng], zoom);
                         });
                     });
+                    updateMapToBounds();
                 });
 
                 map.on('click', function (e) {
@@ -82,8 +83,8 @@ $(function () {
     });
 
 function addMapPin(userId, pos, text) {
-    userMarkers[userId] = L.marker(pos);
-    var popup = L.popup().setContent(userId);
+    userMarkers[userId] = new L.marker(pos);
+    var popup = new L.popup().setContent("User: " + userId);
     userMarkers[userId].bindPopup(popup).openPopup();
     markerLayer.addLayer(userMarkers[userId]);
 
@@ -95,6 +96,25 @@ function updateMapPin(userId, pos, text) {
     } else {
         addMapPin(userId, pos, text);
     }
+}
+
+function updateMapToBounds() {
+    var bounds = null;
+
+    var layers = lineLayer.getLayers();
+    for (var i=0; i<layers.length; i++) {
+        var currentLayer = layers[i];
+
+        var curBounds = currentLayer.getBounds();
+
+        if (bounds === null) {
+            bounds = new L.LatLngBounds(curBounds);
+        } else {
+            bounds.extend(curBounds);
+        }
+    }
+
+    map.fitBounds(bounds);
 }
 
 function getRandomColor() {
