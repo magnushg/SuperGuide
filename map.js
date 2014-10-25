@@ -7,7 +7,7 @@ var scope,
     userMarkers = {},
     lineLayer,
     markerLayer,
-    zoom = 15;
+    zoom = 16;
 
 
 $(function () {
@@ -45,7 +45,7 @@ $(function () {
                         addPosition(userKey, trackingElement.lat, trackingElement.lng);
                         updateMapPin(userKey, [trackingElement.lat, trackingElement.lng], "Last position");
                         console.log("Map: ", map);
-                        map.setView([trackingElement.lat, trackingElement.lng], 18);
+                        map.setView([trackingElement.lat, trackingElement.lng], zoom);
                     });
                 });
 
@@ -67,7 +67,7 @@ $(function () {
                         $.each(trackings, function (trackingKey, trackingElement) {
                             addPosition(userKey, trackingElement.lat, trackingElement.lng);
                             updateMapPin(userKey, [trackingElement.lat, trackingElement.lng], "Last position");
-                            map.setView([trackingElement.lat, trackingElement.lng], 18);
+                            map.setView([trackingElement.lat, trackingElement.lng], zoom);
                         });
                     });
                 });
