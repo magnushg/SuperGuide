@@ -7,11 +7,40 @@
 			padding: 0px;
 			height: 100%;
 			width: 100%;
+			font-family: "Arial", Arial, sans-serif;
+			font-size: 20px;
+			text-shadow: 0 1px white;
 		}
 
 		#map {
 			height: 100%;
 			width: 100%;
+		}
+
+		.chatbox {
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			min-width: 200px;
+			min-height: 100px;
+			width: auto;
+			height: 20%;
+		}
+
+		.chatmessage-container {
+			margin: 10px;
+			position: relative;
+			-webkit-transition: all 1.2s ease-out;
+			-moz-transition: all 1.2s ease-out;
+			-ms-transition: all 1.2s ease-out;
+			-o-transition: all 1.2s ease-out;
+			transition: all 1.2s ease-out;
+		}
+
+		.chatmessage {
+			background: hsla(4, 88%, 44%, 0.50);
+			border-radius: 5px;
+			padding: 3px;
 		}
 
 		.fixedbottom {
@@ -37,6 +66,12 @@
 </head>
 <body ng-controller="superController">
 <div id="map"></div>
+<div class="chatbox">
+	<div class="chatmessage-container"><span class="chatmessage">[Brukernavn]: Hei dette er en melding</span></div>
+	<div class="chatmessage-container"><span class="chatmessage">[Brukernavn]: Lorem ipsum</span></div>
+	<div class="chatmessage-container"><span class="chatmessage">[Brukernavn]: Hei dette </span></div>
+	<div class="chatmessage-container"><span class="chatmessage">[Brukernavn]: Hei dette er en melding</span></div>
+</div>
 <div class="fixedbottom"><input type="text" ng-model="message.$value"/></div>
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
 </body>
