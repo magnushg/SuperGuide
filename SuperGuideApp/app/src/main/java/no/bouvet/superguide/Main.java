@@ -68,6 +68,7 @@ public class Main extends Activity {
                         messages.child("lng").setValue(location.getLongitude());
                         messages.child("time").setValue(location.getTime());
                     }
+                    v.setText("");
                     handled = true;
                 }
                 return handled;
