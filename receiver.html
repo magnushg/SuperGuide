@@ -1,150 +1,106 @@
-<!--
-Copyright (C) 2014 Google Inc. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
 <!DOCTYPE html>
 <html>
-  <head>
-    <style type="text/css">
-	  html, body {
-	    margin: 0px;
-        padding: 0px;
-        height: 100%;
-        width: 100%;
-	  }
-
-    #map {
-        height: 100%;
-        width: 100%;
-    }
-
-
-    </style>
-    <title>Cast Hello Text</title>
-
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-
-
-  </head>
-  <body>
-      <div id="map">
-
-
-          	<script>
-
-		var map = L.map('map').setView([51.505, -0.09], 13);
-
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			id: 'examples.map-i875mjb7'
-		}).addTo(map);
-
-
-		L.marker([51.5, -0.09]).addTo(map)
-			.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-
-		L.circle([51.508, -0.11], 500, {
-			color: 'red',
-			fillColor: '#f03',
-			fillOpacity: 0.5
-		}).addTo(map).bindPopup("I am a circle.");
-
-		L.polygon([
-			[51.509, -0.08],
-			[51.503, -0.06],
-			[51.51, -0.047]
-		]).addTo(map).bindPopup("I am a polygon.");
-
-
-		var popup = L.popup();
-
-		function onMapClick(e) {
-			popup
-				.setLatLng(e.latlng)
-				.setContent("You clicked the map at " + e.latlng.toString())
-				.openOn(map);
+<head>
+	<style type="text/css">
+		html, body {
+			margin: 0px;
+			padding: 0px;
+			height: 100%;
+			width: 100%;
 		}
 
-		map.on('click', onMapClick);
+		#map {
+			height: 100%;
+			width: 100%;
+		}
+	</style>
+	<title>SuperGuide</title>
 
-	</script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+	var jeloya = [59.4363095, 10.6003957];
+	var helloMarker;
+	var map = L.map('map', {
+		zoomControl:false
+	}).setView(jeloya, 13);
 
 
-	<DIV id="message">Talk to me</DIV>
-    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
-    <script type="text/javascript">
-      window.onload = function() {
-        cast.receiver.logger.setLevelValue(0);
-        window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-        console.log('Starting Receiver Manager');
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 18,
+		attribution: 'SuperGuide - Maps by OpenStreetMap',
+		id: 'superguideMap'
+	}).addTo(map);
 
-        // handler for the 'ready' event
-        castReceiverManager.onReady = function(event) {
-          console.log('Received Ready event: ' + JSON.stringify(event.data));
-          window.castReceiverManager.setApplicationState("Application status is ready...");
-        };
+	helloMarker = L.marker(jeloya);
+	helloMarker.addTo(map).bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 
-        // handler for 'senderconnected' event
-        castReceiverManager.onSenderConnected = function(event) {
-          console.log('Received Sender Connected event: ' + event.data);
-          console.log(window.castReceiverManager.getSender(event.data).userAgent);
-        };
+</script>
 
-        // handler for 'senderdisconnected' event
-        castReceiverManager.onSenderDisconnected = function(event) {
-          console.log('Received Sender Disconnected event: ' + event.data);
-          if (window.castReceiverManager.getSenders().length == 0) {
-	        window.close();
-	      }
-        };
+<script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+<script type="text/javascript">
+	window.onload = function () {
+		cast.receiver.logger.setLevelValue(0);
+		window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+		console.log('Starting Receiver Manager');
 
-        // handler for 'systemvolumechanged' event
-        castReceiverManager.onSystemVolumeChanged = function(event) {
-          console.log('Received System Volume Changed event: ' + event.data['level'] + ' ' +
-              event.data['muted']);
-        };
+		// handler for the 'ready' event
+		castReceiverManager.onReady = function (event) {
+			console.log('Received Ready event: ' + JSON.stringify(event.data));
+			window.castReceiverManager.setApplicationState("Application status is ready...");
+		};
 
-        // create a CastMessageBus to handle messages for a custom namespace
-        window.messageBus =
-          window.castReceiverManager.getCastMessageBus(
-              'urn:x-cast:com.google.cast.sample.helloworld');
+		// handler for 'senderconnected' event
+		castReceiverManager.onSenderConnected = function (event) {
+			console.log('Received Sender Connected event: ' + event.data);
+			console.log(window.castReceiverManager.getSender(event.data).userAgent);
+		};
 
-        // handler for the CastMessageBus message event
-        window.messageBus.onMessage = function(event) {
-          console.log('Message [' + event.senderId + ']: ' + event.data);
-          // display the message from the sender
-          displayText(event.data);
-          // inform all senders on the CastMessageBus of the incoming message event
-          // sender message listener will be invoked
-          window.messageBus.send(event.senderId, event.data);
-        }
+		// handler for 'senderdisconnected' event
+		castReceiverManager.onSenderDisconnected = function (event) {
+			console.log('Received Sender Disconnected event: ' + event.data);
+			if (window.castReceiverManager.getSenders().length == 0) {
+				window.close();
+			}
+		};
 
-        // initialize the CastReceiverManager with an application status message
-        window.castReceiverManager.start({statusText: "Application is starting"});
-        console.log('Receiver Manager started');
-      };
+		// handler for 'systemvolumechanged' event
+		castReceiverManager.onSystemVolumeChanged = function (event) {
+			console.log('Received System Volume Changed event: ' + event.data['level'] + ' ' +
+			event.data['muted']);
+		};
 
-      // utility function to display the text message in the input field
-      function displayText(text) {
-        console.log(text);
-        document.getElementById("message").innerHTML=text;
-        window.castReceiverManager.setApplicationState(text);
-      };
-    </script>
-  </body>
+		// create a CastMessageBus to handle messages for a custom namespace
+		window.messageBus =
+				window.castReceiverManager.getCastMessageBus(
+						'urn:x-cast:com.google.cast.sample.helloworld');
+
+		// handler for the CastMessageBus message event
+		window.messageBus.onMessage = function (event) {
+			console.log('Message [' + event.senderId + ']: ' + event.data);
+			// display the message from the sender
+			displayText(event.data);
+			// inform all senders on the CastMessageBus of the incoming message event
+			// sender message listener will be invoked
+			window.messageBus.send(event.senderId, event.data);
+		};
+
+		// initialize the CastReceiverManager with an application status message
+		window.castReceiverManager.start({statusText: "Application is starting"});
+		console.log('Receiver Manager started');
+	};
+
+	// utility function to display the text message in the input field
+	function displayText(text) {
+		console.log(text);
+		helloMarker.setContent(text);
+		window.castReceiverManager.setApplicationState(text);
+	}
+
+</script>
+</body>
 </html>
