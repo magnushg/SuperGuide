@@ -87,7 +87,7 @@ function addMapPin(userId, pos, text) {
     if (!lineColors[userId]) {
         lineColors[userId] = getRandomColor();
     }
-    var icon = L.MakiMarkers.icon({icon: "rocket", color: lineColors[userId], size: "m"});
+    var icon = L.MakiMarkers.icon({icon: "pitch", color: lineColors[userId], size: "m"});
     userMarkers[userId] = L.marker(pos, {icon: icon});
     var popup = new L.popup().setContent("User: " + userId);
     userMarkers[userId].bindPopup(popup).openPopup();
