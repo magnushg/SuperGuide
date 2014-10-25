@@ -84,7 +84,11 @@ $(function () {
     });
 
 function addMapPin(userId, pos, text) {
-    userMarkers[userId] = new L.marker(pos);
+    if (!lineColors[userId]) {
+        lineColors[userId] = getRandomColor();
+    }
+    var icon = L.MakiMarkers.icon({icon: "rocket", color: lineColors[userId], size: "m"});
+    userMarkers[userId] = L.marker(pos, {icon: icon});
     var popup = new L.popup().setContent("User: " + userId);
     userMarkers[userId].bindPopup(popup).openPopup();
     markerLayer.addLayer(userMarkers[userId]);
