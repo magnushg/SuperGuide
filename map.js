@@ -5,6 +5,7 @@ var scope,
     textPopup,
     paths = {},
     userMarkers = {},
+    lineColors = {},
     lineLayer,
     markerLayer,
     zoom = 16;
@@ -83,7 +84,11 @@ $(function () {
     });
 
 function addMapPin(userId, pos, text) {
-    userMarkers[userId] = new L.marker(pos);
+    if (!lineColors[userId]) {
+        lineColors[userId] = getRandomColor();
+    }
+    var icon = L.MakiMarkers.icon({icon: "pitch", color: lineColors[userId], size: "m"});
+    userMarkers[userId] = L.marker(pos, {icon: icon});
     var popup = new L.popup().setContent("User: " + userId);
     userMarkers[userId].bindPopup(popup).openPopup();
     markerLayer.addLayer(userMarkers[userId]);
@@ -128,7 +133,10 @@ function addPosition(lineId, lat, lng) {
         paths[lineId].addLatLng([lat, lng]);
     } else {
         console.log("Creating new");
-        paths[lineId] = L.polyline([[lat, lng]], {color: getRandomColor()});
+        if (!lineColors[lineId]) {
+            lineColors[lineId] = getRandomColor();
+        }
+        paths[lineId] = L.polyline([[lat, lng]], {color: lineColors[lineId]});
         lineLayer.addLayer(paths[lineId]);
     }
 }
