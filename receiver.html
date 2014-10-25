@@ -36,12 +36,7 @@
 </head>
 <body ng-controller="superController">
 <div id="map"></div>
-<div class="fixedbottom">
-	<ul>
-		<li ng-repeat="position in positions">{{position.lat}}</li>
-	</ul>
-</div>
-
+<div class="fixedbottom"><input type="text" ng-model="message.$value"/></div>
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
 </body>
 </html>
