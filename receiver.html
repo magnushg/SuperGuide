@@ -25,11 +25,11 @@
 	<title>SuperGuide</title>
 
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-  <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
-  <script src="https://cdn.firebase.com/libs/angularfire/0.8.2/angularfire.min.js"></script>
-  <script src="superCtrl.js"></script>
+	<script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/0.8.2/angularfire.min.js"></script>
+	<script src="superCtrl.js"></script>
 </head>
 <body ng-controller="superController">
 <div id="map"></div>
@@ -39,7 +39,7 @@
 	var jeloya = [59.4363095, 10.6003957];
 	var helloMarker;
 	var map = L.map('map', {
-		zoomControl:false
+		zoomControl: false
 	}).setView(jeloya, 13);
 
 
@@ -53,6 +53,13 @@
 	var textPopup = L.popup()
 			.setContent('Hi Jeløya');
 	helloMarker.addTo(map).bindPopup(textPopup).openPopup();
+
+	var paths = {};
+	map.on('click', function(e) {
+		addPosition('click', e.latlng.lat, e.latlng.lng);
+	});
+
+
 
 </script>
 
@@ -108,6 +115,23 @@
 		window.castReceiverManager.start({statusText: "Application is starting"});
 		console.log('Receiver Manager started');
 	};
+
+	function getRandomColor() {
+		return '#'+ ('000000' + (Math.random()*0xFFFFFF<<0).toString(16)).slice(-6);
+	}
+
+	function addPosition(lineId, lat, lng) {
+		console.log("Adding position ", lineId, lat, lng);
+		if (paths[lineId]) {
+			console.log("Exists");
+			paths[lineId].addLatLng([lat, lng]);
+		} else {
+			console.log("Creating new");
+			paths[lineId] = L.polyline([[lat, lng]], {color: getRandomColor()});
+			paths[lineId].addTo(map);
+		}
+	}
+
 
 	// utility function to display the text message in the input field
 	function displayText(text) {
