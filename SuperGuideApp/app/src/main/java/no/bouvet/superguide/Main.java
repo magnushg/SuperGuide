@@ -60,11 +60,14 @@ public class Main extends Activity {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     Firebase message = firebase.child("UserMessages").child(SIMSerialNumber);
                     Firebase messages = message.child("Messages").push();
-                    messages.child("message").setValue("poop");
+                    String messageValue = v.getText().toString();
+                    messages.child("message").setValue(messageValue);
                     Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    messages.child("lat").setValue(location.getLatitude());
-                    messages.child("lng").setValue(location.getLongitude());
-                    messages.child("time").setValue(location.getTime());
+                    if (location != null) {
+                        messages.child("lat").setValue(location.getLatitude());
+                        messages.child("lng").setValue(location.getLongitude());
+                        messages.child("time").setValue(location.getTime());
+                    }
                     handled = true;
                 }
                 return handled;
