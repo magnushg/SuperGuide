@@ -29,14 +29,38 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SetupFields();
+        SetupBroadcastListener();
+        SetupMessageSender();
+        SetupLocationListener();
+    }
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        TelephonyManager telephonyManager = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-        SIMSerialNumber = telephonyManager.getSimSerialNumber();
+    private void SetupMessageSender() {
+        EditText editText = (EditText) findViewById(R.id.editText);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    Firebase message = firebase.child("UserMessages").push();
+                    String messageValue = v.getText().toString();
+                    message.child("message").setValue(messageValue);
+                    message.child("userid").setValue(SIMSerialNumber);
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (location != null) {
+                        message.child("lat").setValue(location.getLatitude());
+                        message.child("lng").setValue(location.getLongitude());
+                        message.child("time").setValue(location.getTime());
+                    }
+                    v.setText("");
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+    }
 
-        Firebase.setAndroidContext(this);
-        firebase = new Firebase("https://superguide.firebaseio.com/");
-
+    private void SetupBroadcastListener() {
         firebase.child("BroadcastMessage").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -49,33 +73,15 @@ public class Main extends Activity {
             }
             @Override public void onCancelled(FirebaseError error) { }
         });
+    }
 
+    private void SetupFields() {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+        SIMSerialNumber = telephonyManager.getSimSerialNumber();
+        Firebase.setAndroidContext(this);
+        firebase = new Firebase("https://superguide.firebaseio.com/");
         textView = (TextView)findViewById(R.id.Message);
-
-        EditText editText = (EditText) findViewById(R.id.editText);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    Firebase message = firebase.child("UserMessages").child(SIMSerialNumber);
-                    Firebase messages = message.child("Messages").push();
-                    String messageValue = v.getText().toString();
-                    messages.child("message").setValue(messageValue);
-                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (location != null) {
-                        messages.child("lat").setValue(location.getLatitude());
-                        messages.child("lng").setValue(location.getLongitude());
-                        messages.child("time").setValue(location.getTime());
-                    }
-                    v.setText("");
-                    handled = true;
-                }
-                return handled;
-            }
-        });
-
-        SetupLocationListener();
     }
 
     private void SetupLocationListener() {
