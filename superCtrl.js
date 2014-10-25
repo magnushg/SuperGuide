@@ -1,6 +1,6 @@
 angular.module('superguide', ['firebase'])
   .controller('superController', ['$scope', '$firebase', function($scope, $firebase) {
-    var ref = new Firebase("https://superguide.firebaseio.com/Position/89470305121008169943/Trackings");
+    var ref = new Firebase("https://superguide.firebaseio.com/Position/89470305121008177854/Trackings");
     var sync = $firebase(ref);
 
     //var syncObject = sync.$asObject();

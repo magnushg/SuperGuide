@@ -31,7 +31,8 @@
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 	<script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
 	<script src="https://cdn.firebase.com/libs/angularfire/0.8.2/angularfire.min.js"></script>
-	<script src="superCtrl.js"></script>
+	<script src="map.js"></script>
+  <script src="superCtrl.js"></script>
 </head>
 <body ng-controller="superController">
 <div id="map"></div>
@@ -40,119 +41,7 @@
       <li ng-repeat="position in positions">{{position.lat}}</li>
     </ul>
   </div>
-<script>
-
-var scope, jeloya, helloMarker, map, paths, textPopup;
-
-$(function () {
-  scope = angular.element($('body')).scope();
-  jeloya = [59.43679135, 10.59456106];
-  helloMarker;
-  map = L.map('map', {
-    zoomControl: false
-  }).setView(jeloya, 13);
-
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attribution: 'SuperGuide - Maps by OpenStreetMap',
-    id: 'superguideMap'
-  }).addTo(map);
-
-  helloMarker = L.marker(jeloya);
-  textPopup = L.popup()
-      .setContent('Hi Jeløya');
-  helloMarker.addTo(map).bindPopup(textPopup).openPopup();
-
-  paths = {};
-  map.on('click', function(e) {
-    addPosition('click', e.latlng.lat, e.latlng.lng);
-  });
-})
-
-
-
-
-
-</script>
 
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
-<script type="text/javascript">
-	window.onload = function () {
-		cast.receiver.logger.setLevelValue(0);
-		window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-		console.log('Starting Receiver Manager');
-
-		// handler for the 'ready' event
-		castReceiverManager.onReady = function (event) {
-			console.log('Received Ready event: ' + JSON.stringify(event.data));
-			window.castReceiverManager.setApplicationState("Application status is ready...");
-		};
-
-		// handler for 'senderconnected' event
-		castReceiverManager.onSenderConnected = function (event) {
-			console.log('Received Sender Connected event: ' + event.data);
-			console.log(window.castReceiverManager.getSender(event.data).userAgent);
-		};
-
-		// handler for 'senderdisconnected' event
-		castReceiverManager.onSenderDisconnected = function (event) {
-			console.log('Received Sender Disconnected event: ' + event.data);
-			if (window.castReceiverManager.getSenders().length == 0) {
-				window.close();
-			}
-		};
-
-		// handler for 'systemvolumechanged' event
-		castReceiverManager.onSystemVolumeChanged = function (event) {
-			console.log('Received System Volume Changed event: ' + event.data['level'] + ' ' +
-			event.data['muted']);
-		};
-
-		// create a CastMessageBus to handle messages for a custom namespace
-		window.messageBus =
-				window.castReceiverManager.getCastMessageBus(
-						'urn:x-cast:com.google.cast.sample.helloworld');
-
-		// handler for the CastMessageBus message event
-		window.messageBus.onMessage = function (event) {
-			console.log('Message [' + event.senderId + ']: ' + event.data);
-			// display the message from the sender
-			displayText(event.data);
-			// inform all senders on the CastMessageBus of the incoming message event
-			// sender message listener will be invoked
-			window.messageBus.send(event.senderId, event.data);
-		};
-
-		// initialize the CastReceiverManager with an application status message
-		window.castReceiverManager.start({statusText: "Application is starting"});
-		console.log('Receiver Manager started');
-	};
-
-	function getRandomColor() {
-		return '#'+ ('000000' + (Math.random()*0xFFFFFF<<0).toString(16)).slice(-6);
-	}
-
-	function addPosition(lineId, lat, lng) {
-		console.log("Adding position ", lineId, lat, lng);
-		if (paths[lineId]) {
-			console.log("Exists");
-			paths[lineId].addLatLng([lat, lng]);
-		} else {
-			console.log("Creating new");
-			paths[lineId] = L.polyline([[lat, lng]], {color: getRandomColor()});
-			paths[lineId].addTo(map);
-		}
-	}
-
-
-	// utility function to display the text message in the input field
-	function displayText(text) {
-		console.log(text);
-		textPopup.setContent(text);
-		window.castReceiverManager.setApplicationState(text);
-	}
-
-</script>
 </body>
 </html>
