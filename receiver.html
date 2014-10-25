@@ -142,6 +142,8 @@ limitations under the License.
       // utility function to display the text message in the input field
       function displayText(text) {
         console.log(text);
+        L.marker([51.5, -0.09]).addTo(map)
+          .bindPopup(text).openPopup();
         document.getElementById("message").innerHTML=text;
         window.castReceiverManager.setApplicationState(text);
       };
