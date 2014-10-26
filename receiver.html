@@ -69,7 +69,7 @@
 <div id="map"></div>
 <div class="fixedbottom"><input type="text" ng-model="message.$value"/>
  <ul class="chatbox">
-      <li class="chatmessage-container" ng-repeat="chatMessage in chat | orderBy:time:reverse | limitTo: 3">
+      <li class="chatmessage-container" ng-repeat="chatMessage in chat | orderBy:time:reverse | limitTo: 3 | orderBy:time">
 		  <span class="chatmessage" ng-style>[{{chatMessage.time | date : 'HH:mm:ss' }}] &lt;{{chatMessage.userid}}&gt; {{chatMessage.message}}</span>
 	  </li>
 </ul>
