@@ -198,5 +198,7 @@ window.onload = function () {
 function displayText(text) {
     console.log(text);
     textPopup.setContent(text);
+    var scope = angular.element($('body')).scope();
+    scope.message = text;
     window.castReceiverManager.setApplicationState(text);
 }
