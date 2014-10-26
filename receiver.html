@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="superguide">
 <head>
+	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 	<style type="text/css">
 		html, body {
 			margin: 0px;
@@ -67,7 +68,7 @@
 </head>
 <body ng-controller="superController">
 <div id="map"></div>
-<div class="fixedbottom"><input type="text" ng-model="message.$value"/>
+<div class="fixedbottom"><span>From admin: </span><input type="text" ng-model="message.$value"/>
  <ul class="chatbox">
       <li class="chatmessage-container" ng-repeat="chatMessage in chat | orderBy:time:reverse | limitTo: 3 | orderBy:time">
 		  <span class="chatmessage" ng-style>[{{chatMessage.time | date : 'HH:mm:ss' }}] &lt;{{chatMessage.userid}}&gt; {{chatMessage.message}}</span>
