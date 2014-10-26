@@ -128,12 +128,9 @@ function getRandomColor() {
 }
 
 function addPosition(lineId, lat, lng) {
-    console.log("Adding position ", lineId, lat, lng);
     if (paths[lineId]) {
-        console.log("Exists");
         paths[lineId].addLatLng([lat, lng]);
     } else {
-        console.log("Creating new");
         if (!lineColors[lineId]) {
             lineColors[lineId] = getRandomColor();
         }
