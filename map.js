@@ -10,6 +10,7 @@ var scope,
     markerLayer,
     zoom = 16;
 
+// Breaking ze cache
 
 $(function () {
         map = L.map('map', {
